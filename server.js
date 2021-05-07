@@ -1,52 +1,28 @@
 const express = require('express');
-const mongodb = require('mongodb'); // A Client to MongoDB
+const mongodb = require('mongodb'); 
+const bcrypt = require('bcrypt');
 const app = express();
-
-const MongoClient = mongodb.MongoClient;
-
-const url = "mongodb://localhost:27017/"; // URL at which MongoDB service is running
-const dbName = "chatbox";
-
-MongoClient.connect(url, function (err, db) {
-
-    if (err) throw err
-
-    db.close();
-});
+const cors = require('cors')
+const bodyParser = require('body-parser')
+const database = require('./database/database');
+const register = require('./controllers/register');
 
 
-MongoClient.connect(url, function (err, db) {
 
-    var dbo = db.db(dbName);
+const db = {
+    MongoClient: mongodb.MongoClient, 
+    url:"mongodb://localhost:27017/",// URL at which MongoDB service is running
+    dbName:"chatbox" // A Client to MongoDB
+}
 
+app.use(bodyParser.json());
+app.use(cors());
 
-    dbo.createCollection("users", function (err, res) {
-        if (err) {
-            if (err.code === 48) {
-                console.log("Collection already exist")
-            }
-        } else {
-            console.log("Collection created!");
-        }
+database.initDatabase(db)
 
-    });
-
-    dbo.createCollection("chats", function (err, res) {
-        if (err) {
-            if (err.code === 48) {
-                console.log("Collection already exist")
-            }
-        } else {
-            console.log("Collection created!");
-        }
-
-
-    });
-
-    db.close();
-})
-
-
+app.post('/register', (req, res) => {
+    
+    register.handleRegister(req,res,db,bcrypt)})
 
 app.get('/', (req, res) => {
     res.json("This is working")
@@ -56,11 +32,7 @@ app.listen(3001, () => {
     console.log('app is running on port 3001')
 })
 
-app.post('/register', (req, res) => {
 
-
-
-})
 
 
 
