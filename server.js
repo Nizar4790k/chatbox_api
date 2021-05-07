@@ -6,6 +6,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const database = require('./database/database');
 const register = require('./controllers/register');
+const login = require('./controllers/login')
 
 
 
@@ -20,9 +21,16 @@ app.use(cors());
 
 database.initDatabase(db)
 
+
 app.post('/register', (req, res) => {
     
-    register.handleRegister(req,res,db,bcrypt)})
+    register.handleRegister(req,res,db,bcrypt)
+})
+
+app.post('/login',(req,res)=>{
+    login.handleLogin(req,res,db,bcrypt);
+})
+
 
 app.get('/', (req, res) => {
     res.json("This is working")
