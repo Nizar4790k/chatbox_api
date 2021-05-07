@@ -40,6 +40,10 @@ app.post('/messages',(req,res)=>{
     messages.saveMessage(req,res,db);
 })
 
+app.get('/messages',(req,res)=>{
+    messages.getMessages(req,res,db);
+})
+
 app.listen(3001, () => {
     console.log('app is running on port 3001')
 })
