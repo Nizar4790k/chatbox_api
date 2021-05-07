@@ -43,7 +43,6 @@ const initDatabase = (database) => {
 
 }
 
-
 module.exports ={
     initDatabase:initDatabase
 };

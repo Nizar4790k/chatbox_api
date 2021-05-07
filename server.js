@@ -7,7 +7,7 @@ const bodyParser = require('body-parser')
 const database = require('./database/database');
 const register = require('./controllers/register');
 const login = require('./controllers/login')
-
+const messages = require('./controllers/messages');
 
 
 const db = {
@@ -34,6 +34,10 @@ app.post('/login',(req,res)=>{
 
 app.get('/', (req, res) => {
     res.json("This is working")
+})
+
+app.post('/messages',(req,res)=>{
+    messages.saveMessage(req,res,db);
 })
 
 app.listen(3001, () => {
