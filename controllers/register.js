@@ -4,6 +4,12 @@ const  handleRegister = async (req,res,database,bcrypt)=>{
     
     const {username,password} = req.body;
     
+    
+
+    if(!username || !password){
+        return res.status(400).json("incorrect form submision");
+    }
+
     let salt = bcrypt.genSaltSync(10);
     
     hash = bcrypt.hashSync(password,salt);
@@ -15,9 +21,7 @@ const  handleRegister = async (req,res,database,bcrypt)=>{
 
     var isFound = false;
 
-    if(!user.username || !user.password){
-        return res.status(400).json("incorrect form submision");
-    }
+   
 
     const client =  await MongoClient.connect(url,{ useNewUrlParser: true })
     .catch(err=>{console.log(err);});
@@ -53,7 +57,8 @@ const  handleRegister = async (req,res,database,bcrypt)=>{
 
     
 } catch(err){
-    console.log(err)
+    res.status(500).json("ERROR IN THE SERVER");
+    
 }finally{
     client.close();
 }
