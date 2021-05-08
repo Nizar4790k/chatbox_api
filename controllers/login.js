@@ -10,7 +10,7 @@ const handleLogin = async function(req,res,database,bcrypt){
     
 
     if(!user.username || !user.password){
-        return res.status(400).json("incorrect form submision");
+        return res.json("ACCESS_DENIED");
     }
 
     const client =  await MongoClient.connect(url,{ useNewUrlParser: true })
@@ -29,12 +29,20 @@ const handleLogin = async function(req,res,database,bcrypt){
 
     let result  = await collection.findOne({username:username});
 
+    if(!result){
+        res.json("ACCESS_DENIED");
+        return;
+        
+    }
+
     let value = bcrypt.compareSync(user.password,result.password);
 
     if(value){
         res.json("ACCESS_GRANTED")
+        
     }else{
         res.json("ACCESS_DENIED");
+        
     }
 
 
