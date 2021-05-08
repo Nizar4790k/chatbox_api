@@ -3,8 +3,6 @@ const mongodb = require('mongodb');
 const bcrypt = require('bcrypt');
 const app = express();
 const cors = require('cors')
-const bodyParser = require('body-parser')
-const database = require('./database/database');
 const register = require('./controllers/register');
 const login = require('./controllers/login')
 const messages = require('./controllers/messages');
@@ -16,10 +14,11 @@ const db = {
     dbName:"chatbox" // A Client to MongoDB
 }
 
-app.use(bodyParser.json());
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
 app.use(cors());
 
-database.initDatabase(db)
+
 
 
 app.post('/register', (req, res) => {
