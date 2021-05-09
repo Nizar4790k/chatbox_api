@@ -21,11 +21,11 @@ async function getMessages(req,res,database){
         let messages = await query.toArray();
         
 
-        console.log(messages);
+        
         if(messages){
-            res.json(messages)
+           return res.json(messages)
         }else{
-            res.json("NO_MESSAGES");
+            return res.json("NO_MESSAGES");
         }
 
     }catch(err){
@@ -40,9 +40,6 @@ async function saveMessage(req,res,database){
 
     
 
-    
-    
-
     if (!username && !text && !date){
         res.status(400).json("incorrect form submision");
     }
@@ -51,6 +48,8 @@ async function saveMessage(req,res,database){
 
     const client =  await MongoClient.connect(url,{ useNewUrlParser: true })
     .catch(err=>{console.log(err);});
+
+    
 
     try{
 
